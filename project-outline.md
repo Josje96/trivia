@@ -1,15 +1,21 @@
-# Project Outline
+# Project Specification: TriviaSync (Static Multiplayer Trivia App)
 
-react web app that integrates the trivia DB api (free, only need the URL)
+## 1. Overview
+A serverless, static React web application that uses the Open Trivia Database API. The game is designed for local multiplayer (up to 10 players/teams) and runs entirely in the browser using local storage for persistence.
 
-- multiplayer up to 10 players
+## 2. Core Technical Requirements
+- **Framework:** React (Vite)
+- **Deployment:** Cloudflare Pages (Auto-rebuilds on git commits to `main`)
+- **State Management:** React Context API + LocalStorage (No backend/database)
+- **API:** [Open Trivia DB](https://opentdb.com/api_config.php)[cite: 1]
+- **Styling:** Fun, vibrant UI (Tailwind CSS + Framer Motion)
 
-- should facilitate teams or individual (same mode just team names or individual)
-
-- each team takes turns guessing to get a point
-
-- Users can set a point limit
-
-- There should be different modes with different options IE everyone can guess and at the end of the users it reveals who got it right, or each team takes a turn and the one who finally gets it right gets a point, speed round where each team takes only one guess to get it right 
-
-- 
+## 3. Game Configuration & Models
+### Player/Team Model
+```json
+{
+  "id": "uuid",
+  "name": "Team Name",
+  "score": 0,
+  "isActive": false
+}
