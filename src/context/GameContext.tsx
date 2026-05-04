@@ -1,5 +1,5 @@
-import React, { createContext, useContext, ReactNode, useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
+import React, { createContext, useContext } from 'react';
+import type { ReactNode } from 'react';
 import { useLocalStorage } from '../hooks/useLocalStorage';
 
 export type Player = {
