@@ -1,73 +1,41 @@
-# React + TypeScript + Vite
+# TriviaSync 
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A serverless, static-file multiplayer trivia application. **TriviaSync** allows players to engage in real-time trivia battles without a heavy backend, utilizing the OpenTDB API and browser-based synchronization.
 
-Currently, two official plugins are available:
+## Overview
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+TriviaSync is designed to be lightweight and fast. Built with **React** and **Vite**, it is hosted as a static site on **Cloudflare Pages**. It leverages a "serverless-first" philosophy, using browser storage and unique session IDs to keep players in sync.
 
-## React Compiler
+- **Frontend:** React + Vite
+- **API:** Open Trivia Database (OpenTDB)
+- **Deployment:** Cloudflare Pages
+- **State Management:** Local/Session Storage & React Hooks
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Features
 
-## Expanding the ESLint configuration
+*   **Multiplayer Sync:** Play together using a serverless synchronization logic.
+*   **Dynamic Categories:** Pulls fresh questions from various categories via OpenTDB.
+*   **Static-File Architecture:** No dedicated database or server required—runs entirely in the browser environment.
+*   **Mobile Friendly:** Designed to work across different machines and devices.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## Development & Setup
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Since this project uses Vite, getting started is straightforward.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Prerequisites
+*   Node.js (LTS version recommended)
+*   GitHub CLI (optional, but recommended for repo management)
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
-
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+### Installation
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/your-username/triviasync.git](https://github.com/your-username/triviasync.git)
+    cd triviasync
+    ```
+2.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+3.  **Run the development server:**
+    ```bash
+    npm run dev
