@@ -17,7 +17,7 @@ function GameContainer() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-teal-900 to-emerald-900 p-4 md:p-8 flex items-center justify-center">
+    <div className="min-h-screen bg-[#0d0b1e] p-4 md:p-8 flex items-center justify-center">
       <AnimatePresence mode="wait">
         <motion.div
           key={gameStarted ? (players.some(p => p.score >= settings.pointLimit) ? 'victory' : 'game') : 'setup'}

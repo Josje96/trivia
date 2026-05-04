@@ -42,27 +42,29 @@ export function useTrivia() {
     return null;
   }, []);
 
-  const fetchQuestions = useCallback(async (retryWithNewToken = true) => {
+  const fetchQuestions = useCallback(async (retryWithNewToken = true, rateLimitRetries = 3) => {
     setLoading(true);
     setError(null);
     try {
       let currentToken = token;
       if (!currentToken) {
         currentToken = await getSessionToken();
+        if (currentToken) await new Promise(resolve => setTimeout(resolve, 1200));
       }
 
       let url = `https://opentdb.com/api.php?amount=50`;
       if (settings.difficulty !== 'any') {
         url += `&difficulty=${settings.difficulty}`;
       }
+      if (settings.categoryId !== null) {
+        url += `&category=${settings.categoryId}`;
+      }
       if (currentToken) {
         url += `&token=${currentToken}`;
       }
 
-      console.log(`Fetching trivia from: ${url}`);
       const response = await fetch(url);
       const data = await response.json();
-      console.log('Trivia API Response:', data);
 
       if (data.response_code === 0) {
         const processedQuestions = data.results.map((q: any) => {
@@ -70,7 +72,6 @@ export function useTrivia() {
           const decodedCorrect = he.decode(q.correct_answer);
           const decodedIncorrect = q.incorrect_answers.map((a: string) => he.decode(a));
           const all = [...decodedIncorrect, decodedCorrect].sort(() => Math.random() - 0.5);
-          
           return {
             ...q,
             question: decodedQuestion,
@@ -82,19 +83,21 @@ export function useTrivia() {
         setQuestions(processedQuestions);
         setCurrentIndex(0);
       } else if ((data.response_code === 3 || data.response_code === 4) && retryWithNewToken) {
-        // Token Not Found or Token Empty (all questions used)
-        console.log('Token expired or empty, requesting reset...');
         const newToken = await getSessionToken();
         if (newToken) {
-          // Wait a bit to avoid immediate rate limit on retry
           await new Promise(resolve => setTimeout(resolve, 2000));
-          return fetchQuestions(false);
+          return fetchQuestions(false, rateLimitRetries);
         }
+      } else if (data.response_code === 5) {
+        if (rateLimitRetries > 0) {
+          await new Promise(resolve => setTimeout(resolve, 6000));
+          return fetchQuestions(retryWithNewToken, rateLimitRetries - 1);
+        }
+        setError('Rate Limit: API is still busy. Please wait a moment and click Retry.');
       } else {
-        switch(data.response_code) {
+        switch (data.response_code) {
           case 1: setError('No Results: Not enough questions for these settings.'); break;
           case 2: setError('Invalid Parameter: The API request was malformed.'); break;
-          case 5: setError('Rate Limit: API is busy. Wait 5s and click Retry.'); break;
           default: setError(`API Error: Code ${data.response_code}. Try again later.`);
         }
       }
@@ -104,7 +107,15 @@ export function useTrivia() {
     } finally {
       setLoading(false);
     }
-  }, [settings.difficulty, token, getSessionToken]);
+  }, [settings.difficulty, settings.categoryId, token, getSessionToken]);
+
+  useEffect(() => {
+    if (!gameStarted) {
+      setQuestions([]);
+      setCurrentIndex(0);
+      setError(null);
+    }
+  }, [gameStarted]);
 
   useEffect(() => {
     if (gameStarted && questions.length === 0 && !loading && !error) {

@@ -12,11 +12,19 @@ export type Player = {
 export type GameDifficulty = 'easy' | 'medium' | 'hard' | 'any';
 export type GameMode = 'Classic' | 'Reveal All' | 'Pass the Mic' | 'Speed Round';
 
+export interface TriviaCategory {
+  id: number;
+  name: string;
+}
+
 interface GameSettings {
   playerLimit: number;
   pointLimit: number;
   difficulty: GameDifficulty;
   mode: GameMode;
+  categoryId: number | null;
+  familyMode: boolean;
+  drinkingMode: boolean;
 }
 
 interface GameContextType {
@@ -34,6 +42,9 @@ const defaultSettings: GameSettings = {
   pointLimit: 10,
   difficulty: 'any',
   mode: 'Classic',
+  categoryId: null,
+  familyMode: false,
+  drinkingMode: false,
 };
 
 const GameContext = createContext<GameContextType | undefined>(undefined);
