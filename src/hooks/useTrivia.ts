@@ -52,7 +52,7 @@ export function useTrivia() {
         if (currentToken) await new Promise(resolve => setTimeout(resolve, 1200));
       }
 
-      let url = `https://opentdb.com/api.php?amount=50`;
+      let url = `https://opentdb.com/api.php?amount=10`;
       if (settings.difficulty !== 'any') {
         url += `&difficulty=${settings.difficulty}`;
       }

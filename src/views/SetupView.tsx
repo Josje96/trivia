@@ -3,7 +3,7 @@ import { useGame, type Player, type TriviaCategory } from '../context/GameContex
 import { v4 as uuidv4 } from 'uuid';
 import { Plus, Users, Play, Settings, Baby, Beer } from 'lucide-react';
 
-const FAMILY_CATEGORY_IDS = [9, 10, 11, 14, 17, 22, 27, 32];
+const FAMILY_CATEGORY_IDS = [9, 10, 11, 13, 14, 17, 22, 27, 32];
 
 const SetupView: React.FC = () => {
   const { players, setPlayers, settings, setSettings, setGameStarted } = useGame();
